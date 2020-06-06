@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.960
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "TableAdapterStarter", "TableAdapter101\TableAdapterStarter.vbproj", "{9A4FB177-A0C9-48A8-90D2-9F17E1CF1602}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{432484FB-DA00-401E-BA6F-7A0CEA36F858}"
+	ProjectSection(SolutionItems) = preProject
+		readme.md = readme.md
+		script.sql = script.sql
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9A4FB177-A0C9-48A8-90D2-9F17E1CF1602}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9A4FB177-A0C9-48A8-90D2-9F17E1CF1602}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9A4FB177-A0C9-48A8-90D2-9F17E1CF1602}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9A4FB177-A0C9-48A8-90D2-9F17E1CF1602}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9878A869-E12C-4779-BE7E-772E8B1E8CC1}
+	EndGlobalSection
+EndGlobal
