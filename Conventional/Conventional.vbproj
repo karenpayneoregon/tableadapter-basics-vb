@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{9A4FB177-A0C9-48A8-90D2-9F17E1CF1602}</ProjectGuid>
+    <ProjectGuid>{E46870AE-BF52-4DC5-89F6-E5D7DE012C35}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <StartupObject>TableAdapter.My.MyApplication</StartupObject>
-    <RootNamespace>TableAdapter</RootNamespace>
-    <AssemblyName>TableAdapter</AssemblyName>
+    <StartupObject>Conventional.My.MyApplication</StartupObject>
+    <RootNamespace>Conventional</RootNamespace>
+    <AssemblyName>Conventional</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>WindowsForms</MyType>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
@@ -22,7 +22,7 @@
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
     <OutputPath>bin\Debug\</OutputPath>
-    <DocumentationFile>TableAdapter.xml</DocumentationFile>
+    <DocumentationFile>Conventional.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -32,7 +32,7 @@
     <DefineTrace>true</DefineTrace>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DocumentationFile>TableAdapter.xml</DocumentationFile>
+    <DocumentationFile>Conventional.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
   </PropertyGroup>
   <PropertyGroup>
@@ -73,21 +73,6 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Classes\Dialogs.vb" />
-    <Compile Include="Classes\Contact.vb" />
-    <Compile Include="ControlHelpers\CueBannerTextCode.vb" />
-    <Compile Include="Forms\AddNewForm.Designer.vb">
-      <DependentUpon>AddNewForm.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\AddNewForm.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\EditForm.Designer.vb">
-      <DependentUpon>EditForm.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\EditForm.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="Form1.vb">
       <SubType>Form</SubType>
     </Compile>
@@ -95,8 +80,6 @@
       <DependentUpon>Form1.vb</DependentUpon>
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="LanguageExtensions\NorthWindExtensions.vb" />
-    <Compile Include="LanguageExtensions\StringExtensions.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -112,19 +95,13 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="NorthWindAzureForInsertsDataSet.Designer.vb">
+    <Compile Include="NorthWindContactsDataSet.Designer.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>NorthWindAzureForInsertsDataSet.xsd</DependentUpon>
+      <DependentUpon>NorthWindContactsDataSet.xsd</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Forms\AddNewForm.resx">
-      <DependentUpon>AddNewForm.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\EditForm.resx">
-      <DependentUpon>EditForm.vb</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.vb</DependentUpon>
     </EmbeddedResource>
@@ -146,38 +123,20 @@
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
     <None Include="App.config" />
-    <None Include="NorthWindAzureForInsertsDataSet.xsc">
-      <DependentUpon>NorthWindAzureForInsertsDataSet.xsd</DependentUpon>
+    <None Include="NorthWindContactsDataSet.xsc">
+      <DependentUpon>NorthWindContactsDataSet.xsd</DependentUpon>
     </None>
-    <None Include="NorthWindAzureForInsertsDataSet.xsd">
+    <None Include="NorthWindContactsDataSet.xsd">
       <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>NorthWindAzureForInsertsDataSet.Designer.vb</LastGenOutput>
+      <LastGenOutput>NorthWindContactsDataSet.Designer.vb</LastGenOutput>
       <SubType>Designer</SubType>
     </None>
-    <None Include="NorthWindAzureForInsertsDataSet.xss">
-      <DependentUpon>NorthWindAzureForInsertsDataSet.xsd</DependentUpon>
+    <None Include="NorthWindContactsDataSet.xss">
+      <DependentUpon>NorthWindContactsDataSet.xsd</DependentUpon>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Save_16x.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Exit_16x.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Edit_16x.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Exit_16x1.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\AddNewRecord.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\FormControls\FormControls.vbproj">
-      <Project>{e1aea45d-bb08-4ece-ba6c-364d00e78398}</Project>
-      <Name>FormControls</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>

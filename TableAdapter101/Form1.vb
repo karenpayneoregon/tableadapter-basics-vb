@@ -1,5 +1,7 @@
 ﻿Imports System.ComponentModel
+Imports System.Data.SqlClient
 Imports System.Text
+Imports FormControls
 Imports TableAdapter.Classes
 Imports TableAdapter.LanguageExtensions
 Imports TableAdapter.My
@@ -37,6 +39,46 @@ Public Class Form1
         End Try
 
     End Sub
+    Private Sub Form1_Shown(sender As Object, e As EventArgs) Handles Me.Shown
+
+        Task.Run(
+            Sub()
+                Try
+                    '
+                    ' Attempt to load data
+                    '
+                    ContactsTableAdapter.Fill(NorthWindAzureForInsertsDataSet.Contacts)
+
+                    For Each column In ContactsDataGridView.Columns.Cast(Of DataGridViewColumn)
+                        column.HeaderText = column.HeaderText.SplitCamelCase()
+                        Invoke(New Action(Sub() column.HeaderText = column.HeaderText.SplitCamelCase()))
+                    Next
+
+                    Invoke(New Action(Sub() ContactsBindingSource.DataSource = NorthWindAzureForInsertsDataSet.Contacts))
+                    Invoke(New Action(Sub() ButtonList().ForEach(Sub(button) button.Enabled = True)))
+                    Invoke(New Action(
+                        Sub()
+                            For Each tsb As ToolStripButton In ContactsBindingNavigator.Items.OfType(Of ToolStripButton)
+                                If Not tsb.Enabled Then
+                                    tsb.Enabled = True
+                                End If
+                            Next
+
+                        End Sub))
+
+                Catch ex As Exception
+                    MessageBox.Show(ex.Message)
+                    Exit Sub
+                End Try
+            End Sub)
+
+
+        If Environment.UserName = "PayneK" Then
+            ContactIdDataGridViewTextBoxColumn.Visible = True
+        End If
+
+
+    End Sub
     '
     ' Split column headers
     ' Show id column if the developer is running the app,
@@ -44,21 +86,20 @@ Public Class Form1
     '
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
-        Me.ContactsTableAdapter.Fill(Me.NorthWindAzureForInsertsDataSet.Contacts)
+        ButtonList().ForEach(Sub(button) button.Enabled = False)
 
-        For Each column In ContactsDataGridView.Columns.Cast(Of DataGridViewColumn)
-            column.HeaderText = column.HeaderText.SplitCamelCase()
+        For Each tsb As ToolStripButton In ContactsBindingNavigator.Items.OfType(Of ToolStripButton)
+            If tsb.Enabled Then
+                tsb.Enabled = False
+            End If
         Next
 
-        If Environment.UserName = "PayneK" Then
-            ContactIdDataGridViewTextBoxColumn.Visible = True
-        End If
 
     End Sub
     Private Sub ContactsDataGridView_CellEndEdit(sender As Object, e As DataGridViewCellEventArgs) _
         Handles ContactsDataGridView.CellEndEdit
 
-        CType(ContactsBindingSource.Current, DataRowView).Row.AcceptChanges()
+        'CType(ContactsBindingSource.Current, DataRowView).Row.AcceptChanges()
 
     End Sub
     ''' <summary>
@@ -100,7 +141,7 @@ Public Class Form1
             If editForm.ShowDialog() = DialogResult.OK Then
                 Contact().FirstName = editForm.Contact.FirstName
                 Contact().LastName = editForm.Contact.LastName
-                CType(ContactsBindingSource.Current, DataRowView).Row.AcceptChanges()
+                'CType(ContactsBindingSource.Current, DataRowView).Row.AcceptChanges()
             End If
         Finally
             editForm.Dispose()
@@ -136,8 +177,7 @@ Public Class Form1
     ''' </summary>
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
-    Private Sub ContactsBindingSource_ListChanged(sender As Object, e As ListChangedEventArgs) _
-        Handles ContactsBindingSource.ListChanged
+    Private Sub ContactsBindingSource_ListChanged(sender As Object, e As ListChangedEventArgs) Handles ContactsBindingSource.ListChanged
 
         '
         ' Interested in changes
@@ -175,10 +215,14 @@ Public Class Form1
         End If
 
         If Dialogs.Question($"Remove {row.Field(Of String)("FirstName")} {row.Field(Of String)("LastName")}") Then
-            ContactsBindingSource.RemoveCurrent()
-            row.AcceptChanges()
-        End If
+            If ContactsTableAdapter.Delete(row.Field(Of Integer)("ContactId")) = 1 Then
+                ContactsBindingSource.RemoveCurrent()
+                row.AcceptChanges()
+            Else
+                MessageBox.Show("Failed to remove contact")
+            End If
 
+        End If
     End Sub
     Private Sub ContactsDataGridView_UserDeletingRow(sender As Object, e As DataGridViewRowCancelEventArgs) _
         Handles ContactsDataGridView.UserDeletingRow
@@ -188,8 +232,14 @@ Public Class Form1
         End If
 
         If Dialogs.Question($"Remove '{ContactFullName}'") Then
-            ContactsBindingSource.RemoveCurrent()
-            CType(ContactsBindingSource.Current, DataRowView).Row.AcceptChanges()
+            Dim row = CType(ContactsBindingSource.Current, DataRowView).Row
+            If ContactsTableAdapter.Delete(Row.Field(Of Integer)("ContactId")) = 1 Then
+                ContactsBindingSource.RemoveCurrent()
+                Row.AcceptChanges()
+            Else
+                MessageBox.Show("Failed to remove contact")
+            End If
+
         End If
 
         e.Cancel = True
@@ -260,4 +310,6 @@ Public Class Form1
     Private Sub CloseButton_Click(sender As Object, e As EventArgs) Handles CloseButton.Click
         Close()
     End Sub
+
+
 End Class
