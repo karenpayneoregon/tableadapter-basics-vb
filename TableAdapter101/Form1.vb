@@ -1,5 +1,4 @@
 ﻿Imports System.ComponentModel
-Imports System.Data.SqlClient
 Imports System.Text
 Imports FormControls
 Imports TableAdapter.Classes
@@ -25,7 +24,7 @@ Public Class Form1
             '
             ' This will not happen in this code sample but in a relation
             ' database without cascading deletes and a record is used by
-            ' related records an excepton would be thrown.
+            ' related records an exception would be thrown.
             '
             If ex.Message.Contains("FK_Customers_Contacts") Then
                 MessageBox.Show("One or more customers are dependent on this contact, can not remove")
@@ -39,6 +38,21 @@ Public Class Form1
         End Try
 
     End Sub
+    ''' <summary>
+    ''' Load data in a Task which allows the application to remain responsive.
+    ''' Use Invoke to prevent cross-thread violations.
+    '''
+    ''' Using the code normally used to fill a table in form load if the
+    ''' server is wrong, not available or the catalog is incorrect the
+    ''' application will not appear until a runtime exception is thrown
+    ''' which may take awhile.
+    '''
+    ''' Any controls which should not be used e.g. the save button have
+    ''' been disabled in form load and are re-enabled upon a successful
+    ''' Fill operation.
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
     Private Sub Form1_Shown(sender As Object, e As EventArgs) Handles Me.Shown
 
         Task.Run(
@@ -56,6 +70,7 @@ Public Class Form1
 
                     Invoke(New Action(Sub() ContactsBindingSource.DataSource = NorthWindAzureForInsertsDataSet.Contacts))
                     Invoke(New Action(Sub() ButtonList().ForEach(Sub(button) button.Enabled = True)))
+
                     Invoke(New Action(
                         Sub()
                             For Each tsb As ToolStripButton In ContactsBindingNavigator.Items.OfType(Of ToolStripButton)
@@ -77,7 +92,6 @@ Public Class Form1
             ContactIdDataGridViewTextBoxColumn.Visible = True
         End If
 
-
     End Sub
     '
     ' Split column headers
@@ -93,13 +107,6 @@ Public Class Form1
                 tsb.Enabled = False
             End If
         Next
-
-
-    End Sub
-    Private Sub ContactsDataGridView_CellEndEdit(sender As Object, e As DataGridViewCellEventArgs) _
-        Handles ContactsDataGridView.CellEndEdit
-
-        'CType(ContactsBindingSource.Current, DataRowView).Row.AcceptChanges()
 
     End Sub
     ''' <summary>
@@ -130,7 +137,9 @@ Public Class Form1
     ''' The form has validation on each TextBox
     ''' </summary>
     Private Sub EditCurrentContact()
-
+        '
+        ' No rows, leave!!!
+        '
         If ContactsBindingSource.Current Is Nothing Then
             Exit Sub
         End If
@@ -141,7 +150,6 @@ Public Class Form1
             If editForm.ShowDialog() = DialogResult.OK Then
                 Contact().FirstName = editForm.Contact.FirstName
                 Contact().LastName = editForm.Contact.LastName
-                'CType(ContactsBindingSource.Current, DataRowView).Row.AcceptChanges()
             End If
         Finally
             editForm.Dispose()
@@ -166,7 +174,7 @@ Public Class Form1
             contactRow.FirstName = newContact.FirstName
             contactRow.LastName = newContact.LastName
 
-            Me.NorthWindAzureForInsertsDataSet.Contacts.Rows.Add(contactRow)
+            NorthWindAzureForInsertsDataSet.Contacts.Rows.Add(contactRow)
 
         End If
 
@@ -177,18 +185,13 @@ Public Class Form1
     ''' </summary>
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
-    Private Sub ContactsBindingSource_ListChanged(sender As Object, e As ListChangedEventArgs) Handles ContactsBindingSource.ListChanged
+    Private Sub ContactsBindingSource_ListChanged(sender As Object, e As ListChangedEventArgs) _
+        Handles ContactsBindingSource.ListChanged
 
         '
         ' Interested in changes
         '
         If e.ListChangedType = ListChangedType.ItemChanged AndAlso e.PropertyDescriptor IsNot Nothing Then
-            '
-            ' Can't access deleted rows, exit now
-            '
-            If e.ListChangedType = e.ListChangedType.ItemDeleted Then
-                Exit Sub
-            End If
 
             Dim currentContact = Contact()
 
@@ -210,6 +213,9 @@ Public Class Form1
 
         Dim row = CType(ContactsBindingSource.Current, DataRowView).Row
 
+        '
+        ' No rows, leave!!!
+        '
         If ContactsBindingSource.Current Is Nothing Then
             Exit Sub
         End If
@@ -291,6 +297,9 @@ Public Class Form1
             sb.AppendLine($"Modified: {modified.Rows.Count}")
         End If
 
+        '
+        ' Should never be any as all deletes are processed immediately
+        '
         Dim removed = contactTable.GetChanges(DataRowState.Deleted)
 
         If removed Is Nothing Then
@@ -310,6 +319,4 @@ Public Class Form1
     Private Sub CloseButton_Click(sender As Object, e As EventArgs) Handles CloseButton.Click
         Close()
     End Sub
-
-
 End Class
