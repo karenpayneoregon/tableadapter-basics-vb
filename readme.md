@@ -13,3 +13,15 @@ Either run script.sql from Visual Studio or from SSMS (SQL-Server Management Stu
 
 #### Code style
 Within the code there are two code style because developers have their own style which usually falls into one of the styles used. It's easy to work into one style to the desire of each developer.
+
+#### Who should use TableAdapters
+At first glance, this way of working with data appears easy yet if time is not taken to learn about them after using the data wizard there can be countless times of frustrations.
+
+Consider after learning how to use TableAdapter they are okay for a first step into working with databases and extremely simple projects. The better choice for working with databases is [Entity Framework Core](https://docs.microsoft.com/en-us/ef/core/) which requires more coding while the rewards are many.
+
+#### Microsoft TechNet Article
+
+TBA
+
+
+
