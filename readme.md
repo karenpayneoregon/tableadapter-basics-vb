@@ -2,6 +2,15 @@
 
 This repository contains a basic VB.NET project to show how to get started with using a TableAdapter.
 
+#### Create and configure TableAdapters
+
+[Microsoft documentation](https://docs.microsoft.com/en-us/visualstudio/data-tools/create-and-configure-tableadapters?view=vs-2019).
+
+#### Validate data in datasets
+
+[Microsoft documentation](https://docs.microsoft.com/en-us/visualstudio/data-tools/validate-data-in-datasets?view=vs-2019)
+
+
 ##### Default connection string
 
 Data Source=**.\SQLEXPRESS**;Initial Catalog=NorthWindAzureForInserts;Integrated Security=True

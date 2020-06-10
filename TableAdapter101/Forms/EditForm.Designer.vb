@@ -31,6 +31,7 @@ Partial Class EditForm
         Me.Button2 = New System.Windows.Forms.Button()
         Me.SaveChangesButton = New System.Windows.Forms.Button()
         Me.ErrorProvider1 = New System.Windows.Forms.ErrorProvider(Me.components)
+        Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         CType(Me.ErrorProvider1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -68,12 +69,14 @@ Partial Class EditForm
         '
         'Button2
         '
+        Me.Button2.CausesValidation = False
         Me.Button2.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.Button2.Image = Global.TableAdapter.My.Resources.Resources.Exit_16x
         Me.Button2.Location = New System.Drawing.Point(147, 80)
         Me.Button2.Name = "Button2"
         Me.Button2.Size = New System.Drawing.Size(75, 30)
         Me.Button2.TabIndex = 5
+        Me.ToolTip1.SetToolTip(Me.Button2, "Cancel changes")
         Me.Button2.UseVisualStyleBackColor = True
         '
         'SaveChangesButton
@@ -83,6 +86,7 @@ Partial Class EditForm
         Me.SaveChangesButton.Name = "SaveChangesButton"
         Me.SaveChangesButton.Size = New System.Drawing.Size(75, 30)
         Me.SaveChangesButton.TabIndex = 4
+        Me.ToolTip1.SetToolTip(Me.SaveChangesButton, "Save current changes")
         Me.SaveChangesButton.UseVisualStyleBackColor = True
         '
         'ErrorProvider1
@@ -90,6 +94,10 @@ Partial Class EditForm
         Me.ErrorProvider1.BlinkStyle = System.Windows.Forms.ErrorBlinkStyle.NeverBlink
         Me.ErrorProvider1.ContainerControl = Me
         Me.ErrorProvider1.Icon = CType(resources.GetObject("ErrorProvider1.Icon"), System.Drawing.Icon)
+        '
+        'ToolTip1
+        '
+        Me.ToolTip1.IsBalloon = True
         '
         'EditForm
         '
@@ -119,4 +127,5 @@ Partial Class EditForm
     Friend WithEvents SaveChangesButton As Button
     Friend WithEvents Button2 As Button
     Friend WithEvents ErrorProvider1 As ErrorProvider
+    Friend WithEvents ToolTip1 As ToolTip
 End Class

@@ -65,15 +65,20 @@ Public Class Form1
 
                     For Each column In ContactsDataGridView.Columns.Cast(Of DataGridViewColumn)
                         column.HeaderText = column.HeaderText.SplitCamelCase()
-                        Invoke(New Action(Sub() column.HeaderText = column.HeaderText.SplitCamelCase()))
+                        Invoke(New Action(Sub() column.HeaderText =
+                                             column.HeaderText.SplitCamelCase()))
                     Next
 
-                    Invoke(New Action(Sub() ContactsBindingSource.DataSource = NorthWindAzureForInsertsDataSet.Contacts))
-                    Invoke(New Action(Sub() ButtonList().ForEach(Sub(button) button.Enabled = True)))
+                    Invoke(New Action(Sub() ContactsBindingSource.DataSource =
+                                         NorthWindAzureForInsertsDataSet.Contacts))
+                    Invoke(New Action(Sub() ButtonList().
+                                         ForEach(Sub(button) button.Enabled = True)))
 
                     Invoke(New Action(
                         Sub()
-                            For Each tsb As ToolStripButton In ContactsBindingNavigator.Items.OfType(Of ToolStripButton)
+                            For Each tsb As ToolStripButton In
+                                         ContactsBindingNavigator.
+                                         Items.OfType(Of ToolStripButton)
                                 If Not tsb.Enabled Then
                                     tsb.Enabled = True
                                 End If
@@ -130,6 +135,24 @@ Public Class Form1
         Handles EditToolStripButton.Click
 
         EditCurrentContact()
+
+    End Sub
+    ''' <summary>
+    ''' If the enter key is pressed first check to see if we are
+    ''' on a valid row, if so present a model form to edit data
+    ''' in the current row.
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub ContactsDataGridView_KeyDown(sender As Object, e As KeyEventArgs) _
+        Handles ContactsDataGridView.KeyDown
+
+        If e.KeyCode = Keys.Enter Then
+            If Not ContactsDataGridView.CurrentRow.IsNewRow Then
+                EditCurrentContact()
+                e.Handled = True
+            End If
+        End If
 
     End Sub
     ''' <summary>
@@ -256,7 +279,10 @@ Public Class Form1
     ''' </summary>
     ''' <returns></returns>
     Private Function Contact() As NWZ.ContactsRow
-        Return NorthWindAzureForInsertsDataSet.Contacts(ContactsDataGridView.CurrentRow.Index)
+
+        Return NorthWindAzureForInsertsDataSet.Contacts(
+            ContactsDataGridView.CurrentRow.Index)
+
     End Function
     Private Function ContactRow() As Contact
         Dim row = CType(ContactsBindingSource.Current, DataRowView).Row
@@ -277,7 +303,9 @@ Public Class Form1
     ''' </summary>
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
-    Private Sub ChangesToolButton_Click(sender As Object, e As EventArgs) Handles ChangesToolButton.Click
+    Private Sub ChangesToolButton_Click(sender As Object, e As EventArgs) _
+        Handles ChangesToolButton.Click
+
         Dim sb As New StringBuilder
 
         Dim contactTable = NorthWindAzureForInsertsDataSet.Tables("Contacts")
@@ -308,7 +336,8 @@ Public Class Form1
             sb.AppendLine($"Deleted: {removed.Rows.Count}")
             For index = 0 To removed.Rows.Count - 1
                 If removed.Rows(index).RowState = DataRowState.Deleted Then
-                    Console.WriteLine(Convert.ToInt32(removed.Rows(index)("ContactId", DataRowVersion.Original)))
+                    Console.WriteLine(Convert.ToInt32(
+                        removed.Rows(index)("ContactId", DataRowVersion.Original)))
                 End If
             Next index
         End If
@@ -318,5 +347,25 @@ Public Class Form1
     End Sub
     Private Sub CloseButton_Click(sender As Object, e As EventArgs) Handles CloseButton.Click
         Close()
+    End Sub
+
+    Private Sub ContactsDataGridView_DataError(sender As Object, e As DataGridViewDataErrorEventArgs) _
+        Handles ContactsDataGridView.DataError
+
+        'TODO - this code is only good for development not production e.g. write to a log file
+        Console.WriteLine(e.Exception.Message)
+        e.Cancel = True
+
+    End Sub
+
+    Private Sub LastNameContainsButton_Click(sender As Object, e As EventArgs) _
+        Handles LastNameContainsButton.Click
+
+        If String.IsNullOrWhiteSpace(LastNameContainsTextBox.Text) Then
+            ContactsBindingSource.Filter = ""
+        Else
+            ContactsBindingSource.Filter = $"LastName LIKE '%{LastNameContainsTextBox.Text}%'"
+        End If
+
     End Sub
 End Class
