@@ -159,6 +159,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <None Include="readme.md" />
     <None Include="Resources\Save_16x.png" />
   </ItemGroup>
   <ItemGroup>

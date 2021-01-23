@@ -16,6 +16,7 @@ Public Class Form1
         Handles ContactsBindingNavigatorSaveItem.Click
 
         Validate()
+
         ContactsBindingSource.EndEdit()
 
         Try
@@ -366,6 +367,12 @@ Public Class Form1
         Else
             ContactsBindingSource.Filter = $"LastName LIKE '%{LastNameContainsTextBox.Text}%'"
         End If
+
+    End Sub
+
+    Private Sub LastNameContainsTextBox_TextChanged(sender As Object, e As EventArgs) Handles LastNameContainsTextBox.TextChanged
+
+        ContactsBindingSource.Filter = $"LastName LIKE '%{LastNameContainsTextBox.Text}%'"
 
     End Sub
 End Class
