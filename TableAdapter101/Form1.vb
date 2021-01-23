@@ -370,7 +370,8 @@ Public Class Form1
 
     End Sub
 
-    Private Sub LastNameContainsTextBox_TextChanged(sender As Object, e As EventArgs) Handles LastNameContainsTextBox.TextChanged
+    Private Sub LastNameContainsTextBox_TextChanged(sender As Object, e As EventArgs) _
+        Handles LastNameContainsTextBox.TextChanged
 
         ContactsBindingSource.Filter = $"LastName LIKE '%{LastNameContainsTextBox.Text}%'"
 
